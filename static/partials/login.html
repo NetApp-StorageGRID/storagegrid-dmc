@@ -1,0 +1,75 @@
+<div ng-include="config.tplPath + '/navbar.html'"></div>
+<div class="container-fluid login-container" ng-show="!authService.isLoggedIn()">
+    <div class="row">
+        <div class="col-lg-6 col-sm-12 col-lg-offset-3 login-form-div">
+            <form class="form-horizontal col-sm-12 col-lg-12" name="loginForm" ng-submit="loginForm.$valid && login(loginForm)" novalidate>
+
+                <div class="form-group" ng-class="(loginForm.$submitted || loginForm.access_key.$touched) && loginForm.access_key.$invalid ? 'has-error' : ''">
+                    <label for="access_key" class="col-lg-3 control-label">Access Key</label>
+                    <div class="col-lg-9">
+                        <input type="text" class="form-control" id="access_key" ng-model="auth.access_key" ng-minlength="20" ng-maxlength="20" name="access_key"
+                            required>
+                        <div class="form-group text-center text-danger" ng-if="(loginForm.$submitted ||
+                        loginForm.access_key.$touched) && (loginForm.access_key.$error.minlength || loginForm.access_key.$error.maxlength)">
+                            Access Key length should be 20 characters.
+                        </div>
+                        <div class="form-group text-center text-danger" ng-if="(loginForm.$submitted ||
+                        loginForm.access_key.$touched) && loginForm.access_key.$error.required">
+                            Please enter Access Key.
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group" ng-class="(loginForm.$submitted || loginForm.secret_key.$touched) && loginForm.secret_key.$invalid ? 'has-error' : ''">
+                    <label for="secret_key" class="col-lg-3 control-label">Secret Key</label>
+                    <div class="col-lg-9">
+                        <input type="password" class="form-control" id="secret_key" name="secret_key" ng-model="auth.secret_key" ng-minlength="40"
+                            ng-maxlength="40" required>
+                        <div class="form-group text-center text-danger" ng-if="(loginForm.$submitted ||
+                        loginForm.secret_key.$touched) && (loginForm.secret_key.$error.minlength || loginForm.secret_key.$error.maxlength)">
+                            Secret Key length should be 40 characters.
+                        </div>
+                        <div class="form-group text-center text-danger" ng-if="(loginForm.$submitted ||
+                        loginForm.secret_key.$touched) && loginForm.secret_key.$error.required">
+                            Please enter Secret Key.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="(loginForm.$submitted || loginForm.rest_endpoint.$touched) && loginForm.rest_endpoint.$invalid ? 'has-error' : ''">
+                    <label for="rest_endpoint" class="col-lg-3 control-label">Endpoint</label>
+                    <div class="col-lg-9">
+                        <input type="text" class="form-control" id="rest_endpoint" name="rest_endpoint" ng-model="auth.rest_endpoint" ng-pattern='/^https?://(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])(:[0-9]{2,5})?$/' placeholder="e.g. http[s]://<ip/hostname>[:port]" required>
+                        <div class="form-group text-center text-danger" ng-show="(loginForm.$submitted || loginForm.rest_endpoint.$touched)
+                            && loginForm.rest_endpoint.$error.pattern">
+                            Please provide valid Endpoint (e.g. http[s]://&lt;ip/hostname&gt;[:port]).
+                        </div>
+                        <div class="form-group text-center text-danger" ng-if="(loginForm.$submitted ||
+                        loginForm.rest_endpoint.$touched) && loginForm.rest_endpoint.$error.required">
+                            Please enter Endpoint.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-9" style="padding: 7px; padding-left:17px">
+                        <input type="checkbox" ng-model="auth.verify_cert" id="secure" ng-init="auth.verify_cert=true">
+                        <label for="secure" class="control-label">Verify server certificate</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="col-lg-4 col-lg-offset-5 btn btn-primary" ng-disabled="inprocess"> Login 
+                    <span class="process-spinner" ng-show="inprocess">
+                        <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+                    </span>
+                </button>
+
+                <div class="col-lg-10 col-lg-offset-2 text-center text-danger form-error-div"><span ng-if="error">{{error}}</span></div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="footer">Fonts By <a href="http://glyphicons.com" target="_blank">Glyphicons</a></div>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" data-ng-app="DMCApp">
+
+    <head>
+        <!--
+        StorageGRID Data Management Console (DMC)
+        Copyright (c) 2018, NetApp, Inc.
+        Licensed under the terms of the Modified BSD License (also known as New or Revised or 3-Clause BSD)
+
+      * Angular FileManager v1.5.1 (https://github.com/joni2back/angular-filemanager)
+      * Jonas Sciangula Street <joni2back@gmail.com>
+      * Licensed under MIT (https://github.com/joni2back/angular-filemanager/blob/master/LICENSE)
+    -->
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+        <meta charset="utf-8">
+        <link rel="shortcut icon" href="static/images/favicon.ico">
+
+        <title>StorageGRID - DMC</title>
+
+        <!-- third party -->
+        <script src="static/lib/angular/angular.min.js"></script>
+        <script src="static/lib/angular-route/angular-route.min.js"></script>
+        <script src="static/lib/ng-file-upload/ng-file-upload-all.min.js"></script>
+        <script src="static/lib/jquery/dist/jquery.min.js"></script>
+        <script src="static/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="static/lib/jsencrypt/jsencrypt.min.js"></script>
+        <link rel="stylesheet" href="static/lib/bootswatch/paper/bootstrap.min.css" />
+        <link rel="stylesheet" href="static/lib/components-font-awesome/css/font-awesome.min.css">
+        <script src="static/lib/lodash/dist/lodash.min.js"></script>
+        <script src="static/lib/remarkable-bootstrap-notify/bootstrap-notify.min.js"></script>
+        <!-- /third party -->
+
+        <!--raw source code-->
+        <script src="static/js/app.js"></script>
+        <script src="static/js/directives/directives.js"></script>
+        <script src="static/js/filters/filters.js"></script>
+        <script src="static/js/providers/config.js"></script>
+        <script src="static/js/entities/item.js"></script>
+        <script src="static/js/services/apihandler.js"></script>
+        <script src="static/js/services/apimiddleware.js"></script>
+        <script src="static/js/services/filenavigator.js"></script>
+        <script src="static/js/services/authentication.js"></script>
+        <script src="static/js/services/paginator.js"></script>
+        <script src="static/js/controllers/mainCtrl.js"></script>
+        <script src="static/js/controllers/authCtrl.js"></script>
+        <script src="static/js/services/uploadProgress.js"></script>
+        <script src="static/js/services/uploader.js"></script>
+        <!-- /row source -->
+
+        <!-- custom CSS -->
+        <link href="static/css/animations.css" rel="stylesheet">
+        <link href="static/css/dialogs.css" rel="stylesheet">
+        <link href="static/css/main.css" rel="stylesheet">
+        <!-- /custom CSS-->
+
+    </head>
+
+    <body class="ng-cloak">
+        <div ng-view class="main-container"></div>
+        <textarea id="public_key" style="display:none;">{{public_key}}</textarea>
+        <span id="dmc_version" style="display:none">{{version}}</span>
+        <span id="dmc_build" style="display:none">{{build}}</span>
+    </body>
+
+</html>

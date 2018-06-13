@@ -1,0 +1,26 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div ng-class="!authService.isLoggedIn() ? 'col-md-12 login-required' : 'col-md-9'">
+                <div class="navbar-header">
+                    <a href="#/" class="navbar-brand" ng-click="reloadAll()"><img ng-src="{{config.imgPath + '/storagegrid.png'}}">
+                        StorageGRID<sup>&#174;</sup>&nbsp;Webscale - Data Management Console
+                        <span class="version-info">&nbsp;{{versionInfo}}</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-sm-3 col-md-3" ng-if="authService.isLoggedIn()">
+                <div class="navbar-collapse">
+                    <div class="navbar-form navbar-right text-right logout-button" ng-controller="AuthCtrl">
+                        <button ng-click='logout()' class="btn btn-default">Logout</button>
+                    </div>
+                    <div class="navbar-form navbar-right text-right account-name">
+                        {{authService.getName()}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

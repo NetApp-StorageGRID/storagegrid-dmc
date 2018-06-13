@@ -1,0 +1,5 @@
+Flask==0.12.2
+boto3==1.7.3
+pycryptodome==3.6.0
+cherrypy>=3.0.8,<9.0.0
+pyinstaller==3.3

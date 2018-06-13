@@ -1,0 +1,127 @@
+<div ng-controller="FileManagerCtrl" ng-show="authService.isLoggedIn()">
+    <div ng-include="config.tplPath + '/navbar.html'"></div>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-sm-3 col-md-3 col-xs-12 sidebar bucket-list animated slow fadeIn" ng-include="config.tplPath + '/sidebar.html'">
+            </div>
+            <div class="main col-sm-6 col-md-6">
+                <div class="objects-tools">
+                    <div class="text-right col-xs-12 col-md-12 col-sm-12 objects-toolbar">
+                        <button class="btn btn-flat btn-sm" title="Create Folder" ng-click="modal('newfolder', true)" ng-disabled="fileNavigator.requesting" ng-if="config.allowedActions.createFolder">
+                            <i class="glyphicon glyphicon-plus"></i>
+                        </button>
+                        <button class="btn btn-flat btn-sm" title="Delete" ng-click="modal('deleteobjects', true)" ng-disabled="!temps.length || fileNavigator.requesting" ng-if="config.allowedActions.delete">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </button>
+                        <button class="btn btn-flat btn-sm" title="Upload File(s)" ng-show="config.allowedActions.upload" ng-click="modal('uploadfile', true)"
+                            ng-disabled="fileNavigator.requesting" ng-if="config.allowedActions.upload">
+                            <i class="glyphicon glyphicon-cloud-upload"></i>
+                        </button>
+                        <button class="btn btn-flat btn-sm" title="Download" ng-click="download()" ng-disabled="!temps.length || fileNavigator.requesting" ng-if="config.allowedActions.download">
+                            <i class="glyphicon glyphicon-cloud-download"></i>
+                        </button>
+
+                        <button class="btn btn-flat btn-sm" ng-click="setTemplate('main-icons.html')" ng-show="viewTemplate !=='main-icons.html'"
+                            title="Icons">
+                            <i class="glyphicon glyphicon-th-large"></i>
+                        </button>
+                        <button class="btn btn-flat btn-sm" ng-click="setTemplate('main-table.html')" ng-show="viewTemplate !=='main-table.html'"
+                            title="List">
+                            <i class="glyphicon glyphicon-th-list"></i>
+                        </button>
+
+                        <button class="btn btn-flat btn-sm" title="Refresh" ng-click="fileNavigator.getBuckets('current')" ng-disabled="fileNavigator.requesting">
+                            <i class="glyphicon glyphicon-refresh"></i>
+                        </button>
+
+                        <button class="btn btn-flat btn-sm" title="Configuration" ng-click="modal('configurations', true)" ng-disabled="fileNavigator.requesting" ng-if="config.allowedActions.changeConfig">
+                            <i class="glyphicon glyphicon-cog"></i>
+                        </button>
+                    </div>
+                    <div class=" col-xs-12 col-md-12 col-sm-12 objects-breadcrumb" ng-include="config.tplPath + '/current-folder-breadcrumb.html'"
+                        ng-show="config.breadcrumb">
+                    </div>
+                    <div class=" col-xs-12 col-md-12 col-sm-12 objects-search" ng-show="config.searchForm">
+                        <div class="search-box pull-left">
+                            <button class="btn btn-flat btn-sm">
+                                <i class="glyphicon glyphicon-search mr2"></i>
+                            </button>
+                            <div class="btn-group">
+                                <input type="search" class="form-control objects-search" placeholder="Search..." ng-model="fileNavigator.query"
+                                    autofocus="autofocus">
+                                <span id="searchclear" class="glyphicon glyphicon-remove" ng-click="fileNavigator.query = null" ng-if="fileNavigator.query.length"></span>
+                            </div>
+                        </div>
+                        <div class="pull-right search-info" ng-if="fileNavigator.query && fileNavigator.loadedObjects.end">
+                            Searched results from {{fileNavigator.loadedObjects.start}} to {{fileNavigator.loadedObjects.end}} objects
+
+                            <div class="search-pagination">
+                                <ul class="pagination">
+                                    <li ng-class="{disabled: fileNavigator.page === 1}">
+                                        <a class="btn btn-flat btn-sm btn-prev" title="Search in previous {{config.pageConfig.markerSize}} objects" ng-click="fileNavigator.getPaginatedData('previous')">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </a>
+                                    </li>
+                                    <li ng-class="{disabled: fileNavigator.isLastPage}">
+                                        <a class="btn btn-flat btn-sm btn-next" title="Search in next {{config.pageConfig.markerSize}} objects" ng-click="fileNavigator.getPaginatedData('next')">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="objects-scrollable-div">
+                    <div ng-include="config.tplPath + '/' + viewTemplate" class="main-navigation clearfix" ng-class="{'height-auto-full height-full': fileNavigator.pagedItems.length}"></div>
+                    <footer class="pagination-div" ng-if="fileNavigator.pager.pages.length">
+                        <ul class="pagination" ng-hide="fileNavigator.requesting || fileNavigator.pagedItems.length < 1 || fileNavigator.error">
+
+                            <li ng-class="{disabled:fileNavigator.pager.currentPage === 1}">
+                                <a ng-click="fileNavigator.setPage(1)"><i class="fa fa-angle-double-left"></i></a>
+                            </li>
+
+                            <li ng-if="fileNavigator.query" ng-class="{disabled:fileNavigator.pager.currentPage === 1}">
+                                <a ng-click="fileNavigator.setPage(fileNavigator.pager.currentPage - 1)"><i class="fa fa-angle-left"></i></a>
+                            </li>
+                            <li ng-if="!fileNavigator.query" ng-class="{disabled:fileNavigator.pager.currentPage === 1 && fileNavigator.page == 1}">
+                                <a ng-click="fileNavigator.setPage(fileNavigator.pager.currentPage - 1)" ng-if="!(fileNavigator.pager.currentPage === 1)"><i class="fa fa-angle-left"></i></a>
+                                <a ng-click="fileNavigator.getPaginatedData('previous')" ng-if="fileNavigator.pager.currentPage === 1"><i class="fa fa-angle-left"></i></a>
+                            </li>
+
+                            <li ng-repeat="page in fileNavigator.pager.pages" ng-class="{active:fileNavigator.pager.currentPage === page}">
+                                <a ng-click="fileNavigator.setPage(page)" ng-if="!fileNavigator.query">{{page + fileNavigator.pageOffset}}</a>
+                                <a ng-click="fileNavigator.setPage(page)" ng-if="fileNavigator.query">{{page}}</a>
+                            </li>
+
+                            <li ng-if="fileNavigator.query" ng-class="{disabled:(fileNavigator.pager.currentPage === fileNavigator.pager.totalPages)}">
+                                <a ng-click="fileNavigator.setPage(fileNavigator.pager.currentPage + 1)"><i class="fa fa-angle-right"></i></a>
+                            </li>
+                            <li ng-if="!fileNavigator.query" ng-class="{disabled:(fileNavigator.pager.currentPage === fileNavigator.pager.totalPages) && fileNavigator.isLastPage}">
+                                <a ng-click="fileNavigator.setPage(fileNavigator.pager.currentPage + 1)" ng-if="!(fileNavigator.pager.currentPage === fileNavigator.pager.totalPages)"><i class="fa fa-angle-right"></i></a>
+                                <a ng-click="fileNavigator.getPaginatedData('next')" ng-if="(fileNavigator.pager.currentPage === fileNavigator.pager.totalPages) && !fileNavigator.query"><i class="fa fa-angle-right"></i></a>
+                            </li>
+
+                            <li ng-class="{disabled:fileNavigator.pager.currentPage === fileNavigator.pager.totalPages}">
+                                <a ng-click="fileNavigator.setPage(fileNavigator.pager.totalPages)"><i class="fa fa-angle-double-right"></i></a>
+                            </li>
+
+                        </ul>
+                    </footer>
+                </div>
+
+            </div>
+
+            <div class="main col-sm-3 col-md-3 metadata-div" ng-include="config.tplPath + '/metadata.html'">
+            </div>
+
+        </div>
+    </div>
+	<div class="footer">Fonts By <a href="http://glyphicons.com" target="_blank">Glyphicons</a></div>
+
+    <div ng-include="config.tplPath + '/modals.html'"></div>
+    <div ng-include="config.tplPath + '/item-context-menu.html'"></div>
+</div>

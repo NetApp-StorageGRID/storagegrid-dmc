@@ -1,0 +1,10 @@
+<ol class="breadcrumb">
+    <li ng-repeat="(key, dir) in visiblePath track by key" ng-class="{'active':$last}" class="animated fast fadeIn">
+        <a href="" ng-show="!$last" ng-click="fileNavigator.goTo(key + currentPath.length - visiblePath.length)">
+            {{dir}}
+        </a>
+        <span ng-show="$last">
+            {{dir}}
+        </span>
+    </li>
+</ol>

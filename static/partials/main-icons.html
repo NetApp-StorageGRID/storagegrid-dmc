@@ -1,0 +1,28 @@
+<div class="iconset noselect" ng-class="{'height-auto-full height-full': fileNavigator.pagedItems.length}">
+    <div ng-show="fileNavigator.requesting">
+        <div ng-include="config.tplPath + '/spinner.html'"></div>
+    </div>
+
+    <div ng-show="!fileNavigator.requesting && fileNavigator.pagedItems.length < 1 && !fileNavigator.error">
+        No files or folders available...
+    </div>
+
+    <div class="alert alert-danger" ng-show="!fileNavigator.requesting && fileNavigator.error">
+        {{ fileNavigator.error }}
+    </div>
+
+    <div class="item-list clearfix" ng-click="selectOrUnselect(null, $event)" prevent="true" ng-class="{'height-auto-full': fileNavigator.pagedItems.length}">
+        <div class="col-120" ng-repeat="item in $parent.fileList = (fileNavigator.pagedItems)" ng-show="!fileNavigator.requesting && !fileNavigator.error">
+            <a href="" class="thumbnail text-center" ng-click="selectOrUnselect(item, $event)" ng-dblclick="smartClick(item)" ng-right-click="selectOrUnselect(item, $event)"
+                title="{{item.model.name}} {{{'file': '(' + (item.model.size | humanReadableFileSize) + ')'}[item.model.type]}}"
+                ng-class="{selected: isSelected(item)}">
+                <div class="item-icon">
+                    <i class="glyphicon glyphicon-folder-close" ng-show="item.model.type === 'dir'"></i>
+                    <i class="glyphicon glyphicon-file" data-ext="{{ item.model.name | fileExtension }}" ng-show="item.model.type === 'file'"
+                        ng-class="{'item-extension': config.showExtensionIcons}"></i>
+                </div>
+                <span class="icon-label-span">{{item.model.name | strLimit:'30' }}</span>
+            </a>
+        </div>
+    </div>
+</div>

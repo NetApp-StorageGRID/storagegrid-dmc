@@ -1,0 +1,487 @@
+<div class="modal animated fadeIn" id="deletebucket" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form ng-submit="deleteBucket()">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" ng-disabled="apiMiddleware.apiHandler.inprocess">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">Confirm</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure to delete {{fileNavigator.currentPath[0]}} ?
+
+                    <div ng-include data-src="'error-bar'" class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="apiMiddleware.apiHandler.inprocess">Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary" ng-disabled="apiMiddleware.apiHandler.inprocess" autofocus="autofocus">
+                        Delete
+                        <span class="process-spinner" ng-show="apiMiddleware.apiHandler.inprocess">
+                            <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                            <span class="sr-only">Loading...</span>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal animated fadeIn" id="newfolder" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form ng-submit="newfolderform.$valid && createFolder(newfolderform)" name="newfolderform" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" ng-click="resetForm(newfolderform)" ng-disabled="apiMiddleware.apiHandler.inprocess">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">New folder</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group" ng-class="(newfolderform.$submitted || (newfolderform.newFolderName.$touched && !newfolderform.newFolderName.$pristine)) && newfolderform.newFolderName.$invalid ? 'has-error' : ''">
+                        <label class="radio">Folder Name</label>
+
+                        <input class="form-control" ng-model="$parent.newFolderName" name="newFolderName" autofocus="autofocus" autocomplete="off"
+                            required check-existance checklist="fileNavigator.fileList">
+
+                        <div class="text-left text-danger" ng-if="(newfolderform.$submitted ||
+                        (newfolderform.newFolderName.$touched && !newfolderform.newFolderName.$pristine)) && newfolderform.newFolderName.$error.required">
+                            Folder Name is required.
+                        </div>
+
+                        <div class="text-left text-danger" ng-if="(newfolderform.$submitted ||
+                        (newfolderform.newFolderName.$touched && !newfolderform.newFolderName.$pristine)) && newfolderform.newFolderName.$error.keyExists && !(newfolderform.newFolderName.$error.required)">
+                            Folder with the same name already exists. Please provide different name.
+                        </div>
+                    </div>
+
+                    <div ng-include data-src="'error-bar'" class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="apiMiddleware.apiHandler.inprocess" ng-click="resetForm(newfolderform)">Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary" ng-disabled="apiMiddleware.apiHandler.inprocess">
+                        Create
+                        <span class="process-spinner" ng-show="apiMiddleware.apiHandler.inprocess">
+                            <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                            <span class="sr-only">Loading...</span>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal animated fadeIn" id="newbucket" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form ng-submit="newbucketform.$valid && createBucket(newbucketform)" name="newbucketform" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" ng-click="resetForm(newbucketform)" ng-disabled="apiMiddleware.apiHandler.inprocess">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">New bucket</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group" ng-class="(newbucketform.$submitted || (newbucketform.newBucketName.$touched && !newbucketform.newBucketName.$pristine)) && newbucketform.newBucketName.$invalid ? 'has-error' : ''">
+                        <label class="radio">Bucket Name</label>
+
+                        <input class="form-control" ng-model="$parent.newBucketName" name="newBucketName" autofocus="autofocus" ng-minlength="3"
+                            ng-maxlength="63" bucket-name-validator bucketlist="fileNavigator.buckets" autocomplete="off" required>
+
+                        <div class="text-left text-danger" ng-if="(newbucketform.$submitted || (newbucketform.newBucketName.$touched && !newbucketform.newBucketName.$pristine)) && (newbucketform.newBucketName.$error.minlength || newbucketform.newBucketName.$error.maxlength)">
+                            Bucket Name must be between 3 and 63 characters long.
+                        </div>
+
+                        <div class="text-left text-danger" ng-if="(newbucketform.$submitted || (newbucketform.newBucketName.$touched && !newbucketform.newBucketName.$pristine)) && newbucketform.newBucketName.$error.required">
+                            Bucket Name is required.
+                        </div>
+
+                        <div class="text-left text-danger" ng-if="(newbucketform.$submitted || (newbucketform.newBucketName.$touched && !newbucketform.newBucketName.$pristine)) && newbucketform.newBucketName.$error.bucketnamerule1 && !(newbucketform.newBucketName.$error.required)">
+                            Bucket Name must contain only lowercase characters, numbers, periods, and dashes.
+                        </div>
+                        <div class="text-left text-danger" ng-if="(newbucketform.$submitted || (newbucketform.newBucketName.$touched && !newbucketform.newBucketName.$pristine)) && newbucketform.newBucketName.$error.bucketnamerule2 && !(newbucketform.newBucketName.$error.required)">
+                            Bucket Name must start with a lowercase letter or number.
+                        </div>
+                        <div class="text-left text-danger" ng-if="(newbucketform.$submitted || (newbucketform.newBucketName.$touched && !newbucketform.newBucketName.$pristine)) && newbucketform.newBucketName.$error.bucketnamerule3 && !(newbucketform.newBucketName.$error.required)">
+                            Bucket Name must not contain dashes adjacent to periods.
+                        </div>
+                        <div class="text-left text-danger" ng-if="(newbucketform.$submitted || (newbucketform.newBucketName.$touched && !newbucketform.newBucketName.$pristine)) && newbucketform.newBucketName.$error.bucketnamerule4 && !(newbucketform.newBucketName.$error.required)">
+                            Bucket Name must not contain two adjacent periods.
+                        </div>
+                        <div class="text-left text-danger" ng-if="(newbucketform.$submitted || (newbucketform.newBucketName.$touched && !newbucketform.newBucketName.$pristine)) && newbucketform.newBucketName.$error.bucketnamerule5 && !(newbucketform.newBucketName.$error.required)">
+                            Bucket Name must not end with dash or period.
+                        </div>
+                        <div class="text-left text-danger" ng-if="(newbucketform.$submitted || (newbucketform.newBucketName.$touched && !newbucketform.newBucketName.$pristine)) && newbucketform.newBucketName.$error.bucketnamerule6 && !(newbucketform.newBucketName.$error.required)">
+                            Bucket Name must not resemble an IP address.
+                        </div>
+                        <div class="text-left text-danger" ng-if="(newbucketform.$submitted || (newbucketform.newBucketName.$touched && !newbucketform.newBucketName.$pristine)) && newbucketform.newBucketName.$error.bucketexist && !(newbucketform.newBucketName.$error.required)">
+                            Bucket with the same name already exists. Please provide different name.
+                        </div>
+                    </div>
+
+                    <div ng-include data-src="'error-bar'" class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="apiMiddleware.apiHandler.inprocess" ng-click="resetForm(newbucketform)">Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary" ng-disabled="apiMiddleware.apiHandler.inprocess">
+                        Create
+                        <span class="process-spinner" ng-show="apiMiddleware.apiHandler.inprocess">
+                            <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                            <span class="sr-only">Loading...</span>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal animated fadeIn" id="deleteobjects" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form ng-submit="deleteObjects()">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" ng-disabled="apiMiddleware.apiHandler.inprocess">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">Confirm</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure to delete <span ng-include data-src="'selected-files-msg'"></span>
+                    <div ng-include data-src="'error-bar'" class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="apiMiddleware.apiHandler.inprocess">Cancel</button>
+                    <button type="submit" class="btn btn-primary" ng-disabled="apiMiddleware.apiHandler.inprocess" autofocus="autofocus">
+                        Delete
+                        <span class="process-spinner" ng-show="apiMiddleware.apiHandler.inprocess">
+                            <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                            <span class="sr-only">Loading...</span>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal animated fadeIn" id="configurations" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form ng-submit="configForm.$valid && changeConfig(configForm)" name="configForm" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" ng-click="resetForm(configForm)">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">Configurations</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group" ng-class="configForm.pageSize.$invalid ? 'has-error' : ''">
+                        <label class="radio">Page Size (Number of objects per page)</label>
+                        <input type="number" min="{{config.minPageSize}}" name="pageSize" class="form-control" ng-model="$parent.newConfiguration.pageSize"
+                            autofocus="autofocus" required autocomplete="off">
+                        <div class="text-left text-danger" ng-if="configForm.pageSize.$error.min">
+                            Minimum Page Size is {{config.minPageSize}}.
+                        </div>
+                        <div class="text-left text-danger" ng-if="configForm.pageSize.$error.required">
+                            Page Size is required.
+                        </div>
+                    </div>
+
+
+                    <div class="form-group" ng-class="configForm.markerSize.$invalid ? 'has-error' : ''">
+                        <label class="radio">Marker Size (Maximum number of objects to cache)</label>
+                        <input type="number" min="{{config.minPageMarkerSize}}" name="markerSize" class="form-control" ng-model="$parent.newConfiguration.markerSize"
+                            autocomplete="off" required multiple-of="{{$parent.newConfiguration.pageSize}}">
+
+                        <div class="text-left text-danger" ng-if="configForm.markerSize.$error.min">
+                            Minimum Marker Size is {{config.minPageMarkerSize}}.
+                        </div>
+                        <div class="text-left text-danger" ng-if="configForm.markerSize.$error.required">
+                            Marker Size is required.
+                        </div>
+                        <div class="text-left text-danger" ng-if="configForm.markerSize.$error.multipleOfPageSize && !(configForm.markerSize.$error.min || configForm.markerSize.$error.required)">
+                            Marker Size must be multiple of Page Size.
+                        </div>
+                    </div>
+
+
+                    <div class="form-group" ng-class="configForm.partSize.$invalid ? 'has-error' : ''">
+                        <label class="radio">Multipart Upload Part Size (MB)</label>
+                        <input type="number" min="{{config.minUploadPartSizeInMB}}" name="partSize" class="form-control" ng-model="$parent.newUploadPartSizeInMB"
+                            autocomplete="off" required>
+
+                        <div class="text-left text-danger" ng-if="configForm.partSize.$error.min">
+                            Minimum Part Size is {{config.minUploadPartSizeInMB}}.
+                        </div>
+                        <div class="text-left text-danger" ng-if="configForm.partSize.$error.required">
+                            Part Size is required.
+                        </div>
+                    </div>
+                    <div ng-include data-src="'error-bar'" class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="resetForm(configForm)">Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Update
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal animated fadeIn" id="uploadfile" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Upload files</h4>
+                </div>
+                <div class="modal-body">
+                    <label class="radio"> Files will be uploaded to 
+                        <b>{{ getUploadPath() }}</b>
+                    </label>
+                    <button class="btn btn-default btn-block" ngf-select="$parent.addForUpload($files)" ngf-multiple="true" ng-disabled="!$parent.uploadProgress.enableCloseButton()"> Select files </button>
+
+                    <div class="upload-list">
+                        <ul class="list-group">
+                            <li class="list-group-item" ng-repeat="(index, uploadFile) in $parent.uploadFileList">
+
+                                <button class="btn btn-sm btn-danger pull-right" ng-click="$parent.removeFromUpload(index)" ng-if="$parent.uploadProgress.getStatus(index) === ''">&times;</button>
+
+                                <button class="btn btn-sm btn-danger pull-right" ng-click="$parent.cancelUploadPrompt(index)" ng-if="$parent.uploadProgress.getStatus(index) === 'Uploading'"
+                                    ng-disabled="$parent.uploadProgress.isNonMultipartUpload(index)">&times;</button>
+
+                                <p class="pull-right" ng-if="$parent.uploadProgress.showStatus(index)">
+                                    <span>{{$parent.uploadProgress.getStatus(index)}}</span>
+                                </p>
+
+                                <h5 class="list-group-item-heading">{{uploadFile.name | strLimit:'50'}}</h5>
+
+                                <p class="list-group-item-text">{{uploadFile.size | humanReadableFileSize}}</p>
+
+                                <p class="list-group-item-text" ng-if="$parent.uploadProgress.showProgressBar(index)">{{$parent.uploadProgress.getProgress(index) | number:0 }}%</p>
+
+                                <div class="progress progress-striped active" ng-if="$parent.uploadProgress.showProgressBar(index)">
+                                    <div class="progress-bar" style="width: {{$parent.uploadProgress.getProgress(index) | number:0 }}%"></div>
+                                </div>
+                                <div class="text-danger error-msg animated fadeIn" ng-show="$parent.uploadProgress.getStatus(index) === 'Error' && $parent.uploadProgress.getErrorMsg(index)">
+                                    <i class="glyphicon glyphicon-remove-circle"></i>
+                                    <span>{{$parent.uploadProgress.getErrorMsg(index)}}</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div ng-include data-src="'error-bar'" class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <div>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="$parent.closeUploadDialog()" ng-if="$parent.uploadProgress.enableCloseButton() ||!$parent.uploadFileList.length">Close</button>
+                        <button type="button" class="btn btn-default" ng-click="$parent.cancelUploadPrompt('all')" ng-if="$parent.uploadProgress.isUploading()"
+                            ng-disabled="$parent.uploadProgress.disableCancelAllButton()">Cancel All</button>
+                        <button type="submit" class="btn btn-primary" ng-disabled="!$parent.uploadFileList.length || $parent.uploadProgress.isUploading() || $parent.uploadProgress.isAllFinished() || !$parent.uploadProgress.enableCloseButton()"
+                            ng-click="uploadFiles()">Upload</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal animated fadeIn" id="confirmcancelalluploads">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form ng-submit="cancelUpload()">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">Confirm</h4>
+                </div>
+                <div class="modal-body">
+                    All ongoing uploads will be cancelled. Do you want to continue?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No
+                    </button>
+                    <button type="submit" class="btn btn-primary" autofocus="autofocus">Yes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal animated fadeIn" id="confirmcancelupload">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form ng-submit="cancelUpload(cancelUploadIndex)">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">Confirm</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure to cancel this upload?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No
+                    </button>
+                    <button type="submit" class="btn btn-primary" autofocus="autofocus">Yes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal animated fadeIn" id="renameobject" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form ng-submit="renameForm.$valid && renameObject(renameForm)" name="renameForm" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" ng-click="resetForm(renameForm)" ng-disabled="apiMiddleware.apiHandler.inprocess">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">Rename</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group" ng-class="(renameForm.$submitted || (renameForm.newObjectName.$touched && !renameForm.newObjectName.$pristine)) && renameForm.newObjectName.$invalid ? 'has-error' : ''">
+                        <label class="radio">New Name</label>
+                        <input class="form-control" ng-model="$parent.newObjectName" name="newObjectName" check-existance="$parent.temps[0].model.type"
+                            autocomplete="off" checklist="fileNavigator.fileList" required autofocus="autofocus">
+
+                        <div class="text-left text-danger" ng-if="(renameForm.$submitted || (renameForm.newObjectName.$touched && !renameForm.newObjectName.$pristine)) && renameForm.newObjectName.$error.required">
+                            New Name is required.
+                        </div>
+
+                        <div class="text-left text-danger" ng-if="(renameForm.$submitted || (renameForm.newObjectName.$touched && !renameForm.newObjectName.$pristine)) && renameForm.newObjectName.$error.keyExists && !(renameForm.newObjectName.$error.required)">
+                            <span>{{$parent.temps[0].model.type === 'dir' ? 'Folder' : 'File '}}</span> with the same name
+                            already exists. Please provide different name.
+                        </div>
+                    </div>
+                    <div ng-include data-src="'error-bar'" class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="apiMiddleware.apiHandler.inprocess" ng-click="resetForm(renameForm)">Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary" ng-disabled="apiMiddleware.apiHandler.inprocess">
+                        Rename
+                        <span class="process-spinner" ng-show="apiMiddleware.apiHandler.inprocess">
+                            <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                            <span class="sr-only">Loading...</span>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal animated fadeIn" id="confirmconflictpaste">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form ng-submit="openPasteConfirmDialog()">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">Confirm</h4>
+                </div>
+                <div class="modal-body">
+                    The destination folder is a subfolder of {{ $parent.conflictedPasteFolder.name }} folder. Do you want to skip this folder and continue?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No
+                    </button>
+                    <button type="submit" class="btn btn-primary" autofocus="autofocus" ng-click="modal('confirmconflictpaste')">Yes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal animated fadeIn" id="confirmpasteoverwrite" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form ng-submit="paste()">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" ng-disabled="apiMiddleware.apiHandler.inprocess">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">Choose option</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="radio">
+                        <label>
+                        <input type="radio" name="overwriteorskip" id="overwriteorskip" ng-value="true" checked="{{$parent.overwrite}}" ng-model="$parent.overwrite">
+                            Overwrite files or folder if exists
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                        <input type="radio" name="overwriteorskip" id="overwriteorskip" ng-value="false" checked="{{!$parent.overwrite}}" ng-model="$parent.overwrite">
+                            Skip files or folder if exists
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="apiMiddleware.apiHandler.inprocess">Cancel</button>
+                    <button type="submit" class="btn btn-primary" ng-disabled="apiMiddleware.apiHandler.inprocess">
+                    Paste
+                    <span class="process-spinner" ng-show="apiMiddleware.apiHandler.inprocess">
+                        <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+                    </span>
+                </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="error-bar">
+    <div class="label label-danger error-msg pull-left animated fadeIn" ng-show="apiMiddleware.apiHandler.error || $parent.error">
+        <i class="glyphicon glyphicon-remove-circle"></i>
+        <span>{{apiMiddleware.apiHandler.error || $parent.error}}</span>
+    </div>
+</script>
+
+<script type="text/ng-template" id="selected-files-msg">
+    <span ng-show="temps.length == 1">
+    {{singleSelection().model.name}} ?
+  </span>
+    <span ng-show="temps.length > 1">
+    these {{temps.length}} elements ?
+    <a href="" class="label label-primary" ng-click="showDetails = !showDetails">
+      {{showDetails ? '-' : '+'}} details
+    </a>
+  </span>
+    <div ng-show="temps.length > 1 &amp;&amp; showDetails">
+        <ul class="selected-file-details">
+            <li ng-repeat="tempItem in temps">
+                <b>{{tempItem.model.name}}</b>
+            </li>
+        </ul>
+    </div>
+</script>

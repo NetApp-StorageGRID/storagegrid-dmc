@@ -1,0 +1,77 @@
+/*
+ * StorageGRID Data Management Console (DMC)
+ *
+ * Copyright (c) 2018, NetApp, Inc.
+ *
+ * Licensed under the terms of the Modified BSD License (also known as New or Revised or 3-Clause BSD)
+ *
+ * Parts of this file are based on angular-filemanager: https://github.com/joni2back/angular-filemanager/
+ *
+ * Copyright (c) 2013 joni2back
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+.modal {
+  word-wrap: break-word;
+}
+
+.modal .label.error-msg {
+  display: block;
+  font-size: 12px;
+  margin-top: 5px;
+  padding: 0;
+  padding: 5px;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.modal .label.error-msg > span {
+  white-space: pre-wrap;
+}
+
+.modal .modal-content {
+  border-radius: 10px 10px 4px 4px;
+  border: none;
+}
+
+.modal .modal-header {
+  border-radius: 4px 4px 0 0;
+  background: #67a1d3;
+  padding: 10px;
+}
+
+.modal .modal-header .modal-title {
+  font-size: 20px;
+  line-height: 100%;
+  color: #fff;
+  margin: 0;
+}
+
+.modal .modal-header .close {
+  opacity: 1;
+  color: #D4E5F5;
+}
+
+.modal .modal-header .close[disabled] {
+  cursor: not-allowed;
+}
+
+.modal .modal-body input {
+  margin-bottom: 10px;
+}

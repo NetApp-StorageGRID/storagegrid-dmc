@@ -1,0 +1,23 @@
+<div class="bucket-options">
+    <center>
+        <button class="btn btn-flat btn-sm bucket-tool-btn" title="Create Bucket" ng-click="modal('newbucket', true)">
+            <i class="glyphicon glyphicon-plus"></i> Create Bucket
+        </button>
+        <button class="btn btn-flat btn-sm bucket-tool-btn" title="Delete Bucket" ng-click="modal('deletebucket', true)">
+            <i class="glyphicon glyphicon-remove"></i> Delete Bucket
+        </button>
+    </center>
+</div>
+
+<div class="bucket-scrollable-div">
+    <ul class="nav nav-sidebar bucket-list-root col-sm-12 col-xs-12 col-md-12">
+        <li ng-repeat="item in fileNavigator.buckets" ng-class="{'active': item.Name == fileNavigator.currentPath[0]}" title="{{item.Name}}">
+            <a href="" ng-click="fileNavigator.bucketClick(item.Name)" class="animated fast fadeInDown bucket-name">
+            <i class="fa fa-folder bucket-icon"></i> {{item.Name}}
+        </a>
+        </li>
+        <li ng-if="!fileNavigator.buckets.length && !fileNavigator.requesting" class="animated fast fadeInDown bucket-name">
+            <a>No buckets available.</a>
+        </li>
+    </ul>
+</div>
