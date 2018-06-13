@@ -1,5 +1,7 @@
 # StorageGRID Data Management Console (DMC)
 
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](LICENSE)
+
 The StorageGRID Data Management Console (DMC) provides a web based UI for objects stored in StorageGRID Webscale (SGWS) S3 buckets. The DMC uses S3 APIs to perform authentication and provide access to S3 buckets and objects in SGWS. Use the DMC as an easy alternative to command line tools to access data in SGWS.
 
 ## Features
