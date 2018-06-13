@@ -32,12 +32,13 @@ Option 2: Build the executable for your platform
     python --version
     ```
     
-2. Ensure pip is installed.
+2. Ensure pip and setuptools is installed.
     
     **Note**: If you are running Python 2.7.9 and above then you can skip this step.
     
     ```
     sudo easy_install pip
+    sudo pip install --upgrade setuptools pip
     ```
     
 3. Ensure Git is installed.
