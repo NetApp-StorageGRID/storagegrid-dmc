@@ -110,14 +110,14 @@ Now you can either do Option 1 – start the StorageGRID DMC python process or O
 3. Start/Stop/Restart StorageGrid DMC Service
 
     ```
-    sudo /opt/dmc/storagegrid_dmc/dist/dist/dmc_mac_service [start|stop|restart]
+    sudo storagegrid_dmc/dist/dist/dmc_mac_service [start|stop|restart]
     ```
 
 
     Alternately start the service using below command: 
 
     ```
-    sudo /opt/dmc/storagegrid_dmc/dist/dmc_mac
+    sudo storagegrid_dmc/dist/dmc_mac
     ```
 
 #### Access StorageGrid DMC Service
