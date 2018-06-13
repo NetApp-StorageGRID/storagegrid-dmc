@@ -29,6 +29,7 @@ if __name__ == '__main__':
 
     d = wsgiserver.WSGIPathInfoDispatcher({'/': app.DMC_APP.wsgi_app})
     server = wsgiserver.CherryPyWSGIServer(('0.0.0.0', 8080), d)
+    print("StorageGRID DMC is up at: http://localhost:8080")
 
     multiprocessing.freeze_support()
     try:
@@ -41,10 +42,10 @@ if __name__ == '__main__':
         deleteOldDownloadsThread.start()
         server.start()
     except ValueError as exception:
-        print "Invalid option provided. Please use -h for help"
+        print ("Invalid option provided. Please use -h for help")
         sys.exit(0)
     except KeyboardInterrupt:
-        print "Stopping Server..."
+        print ("Stopping Server...")
         deleteOldDownloadsThread.terminate()
         deleteOldDownloadsThread.join()
         server.stop()
