@@ -32,13 +32,15 @@ Option 2: Build the executable for your platform
     python --version
     ```
     
-2. Ensure pip and setuptools is installed.
+2. Ensure pip and setuptools is installed, and your python path is pointing to python 2.7 libraries
     
     **Note**: If you are running Python 2.7.9 and above then you can skip this step.
     
     ```
     sudo easy_install pip
     sudo pip install --upgrade setuptools pip
+    $ echo $PYTHONPATH 
+    /usr/lib/python2.7/
     ```
     
 3. Ensure Git is installed.
@@ -47,32 +49,15 @@ Option 2: Build the executable for your platform
 
     
 4. Clone the source code from Git.
-
-    Create a new directory /opt/dmc:
-
-    ```
-    sudo mkdir /opt/dmc
-    ```
-
-    ``` 
-    cd /opt/dmc
-    ```
     
     ```
-    sudo git clone <dmc_git_repository_url>
-    ```
-    
-    ```
-    cd /opt/dmc/storagegrid_dmc
+    sudo git clone https://github.com/NetApp-StorageGRID/storagegrid-dmc.git
     ```
     
 5. Install python dependencies.
 
     ```
-    cd /opt/dmc/storagegrid_dmc/installer_scripts
-    ```
-    
-    ```
+    cd storagegrid_dmc/installer_scripts
     sudo pip install -r requirement.txt --ignore-installed six
     ```
     
@@ -85,10 +70,7 @@ Now you can either do Option 1 – start the StorageGRID DMC python process or O
 1. Start StorageGrid DMC Python process.
 
     ```
-    cd /opt/dmc/storagegrid_dmc
-    ```
-
-    ```
+    cd storagegrid_dmc
     python run.py &
     ```
 
@@ -112,24 +94,15 @@ Now you can either do Option 1 – start the StorageGRID DMC python process or O
 1. Create StorageGrid DMC Binary
 
     ```
-    cd /opt/dmc/storagegrid_dmc
-    ```
-    
-    ```
+    cd storagegrid_dmc
     sudo pyinstaller --add-data static:static --add-data templates:templates -F dmc_mac.spec
     ```
 
 2. Create StorageGrid DMC Executable
     
     ```
-    sudo cp /opt/dmc/storagegrid_dmc/installer_scripts/dmc_mac_service.py /opt/dmc/storagegrid_dmc/dist/
-    ```
-    
-    ```
-    cd /opt/dmc/storagegrid_dmc/dist/
-    ```
-    
-    ```
+    sudo cp storagegrid_dmc/installer_scripts/dmc_mac_service.py /opt/dmc/storagegrid_dmc/dist/
+    cd storagegrid_dmc/dist/
     sudo pyinstaller --add-binary dmc_mac:bin dmc_mac_service.py --onefile
     ```
     
