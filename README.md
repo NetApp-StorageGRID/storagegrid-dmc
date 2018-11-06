@@ -57,7 +57,7 @@ Option 2: Build the executable for your platform
 5. Install python dependencies.
 
     ```
-    cd storagegrid_dmc/installer_scripts
+    cd storagegrid-dmc/installer_scripts
     sudo pip install -r requirement.txt --ignore-installed six
     ```
     
